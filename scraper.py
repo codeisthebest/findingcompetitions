@@ -42,6 +42,15 @@ SPORTS_TITLE_KW = {
     "器樂大賽", "器樂比賽", "聲樂大賽", "聲樂比賽",
     "鋼琴大賽", "鋼琴比賽", "小提琴大賽", "大提琴大賽",
     "管樂大賽", "弦樂大賽", "打擊樂大賽",
+    # 音樂劇
+    "音樂劇",
+}
+
+# ── 全文中若含以下關鍵字，代表禁止電繪，應排除 ───────────────────────────────
+HANDRAW_ONLY_KW = {
+    "不得以電腦繪", "不得使用電腦繪", "不得電繪",
+    "禁止電繪", "禁止使用電腦繪", "僅限手繪",
+    "不得以電腦或 AI 繪", "不得以電腦或AI繪",
 }
 
 # ── identifyLimitOther 中若含以下關鍵字，代表僅限學生，應排除 ─────────────────
@@ -84,12 +93,17 @@ def should_include(comp: dict) -> bool:
     if not open_to_public:
         return False
 
-    # ── 體育競技排除（標題 + 說明前 200 字）────────────────────────────────────
-    # 只取說明前段避免誤殺（非運動競賽的說明文字可能偶爾提到運動）
+    # ── 體育競技 / 音樂劇排除（標題 + 說明前 200 字）──────────────────────────
     desc_preview = (comp.get("guideline") or comp.get("description") or "")[:200]
     combined = title + desc_preview
     for kw in SPORTS_TITLE_KW:
         if kw in combined:
+            return False
+
+    # ── 手繪限定排除（全文搜尋）──────────────────────────────────────────────
+    full_desc = comp.get("guideline") or comp.get("description") or ""
+    for kw in HANDRAW_ONLY_KW:
+        if kw in full_desc:
             return False
 
     return True
