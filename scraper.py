@@ -83,6 +83,33 @@ SPORTS_TITLE_KW = {
     "水墨大賽", "水墨比賽", "水墨競賽",
 }
 
+# ── 報名費偵測常數 ────────────────────────────────────────────────────────────
+_FEE_KW   = ["報名費", "參賽費", "參加費用", "報名費用", "參展費"]
+_FREE_NEAR = ["免費", "免收", "無需", "無須", "不收", "free", "Free",
+              "：0元", "：0 元", ":0", "費用：免"]
+_AMOUNT_RE = re.compile(r"[\d,]+\s*(元|美元|英鎊|歐元|日圓|美金|USD|GBP|EUR|JPY|\$|£|€)")
+
+
+def _has_paid_fee(html: str) -> bool:
+    """
+    全文中若有「需付費的報名費」紀錄，回傳 True。
+    邏輯：找到費用關鍵字後，±30 字內無免費字眼，且往後 80 字有金額 → 視為收費。
+    """
+    if not html:
+        return False
+    from bs4 import BeautifulSoup as _BS
+    text = _BS(html, "html.parser").get_text(" ")
+    for kw in _FEE_KW:
+        for m in re.finditer(re.escape(kw), text):
+            near  = text[max(0, m.start() - 30): m.end() + 30]
+            if any(fk in near for fk in _FREE_NEAR):
+                continue
+            after = text[m.start(): m.end() + 80]
+            if _AMOUNT_RE.search(after):
+                return True
+    return False
+
+
 # ── 全文中若含以下關鍵字，代表禁止電繪，應排除 ───────────────────────────────
 HANDRAW_ONLY_KW = {
     "不得以電腦繪", "不得使用電腦繪", "不得電繪",
@@ -159,6 +186,10 @@ def should_include(comp: dict) -> bool:
     for kw in HANDRAW_ONLY_KW:
         if kw in full_desc:
             return False
+
+    # ── 需付費報名費排除（全文搜尋）─────────────────────────────────────────
+    if _has_paid_fee(full_desc):
+        return False
 
     return True
 
