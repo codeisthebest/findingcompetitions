@@ -321,9 +321,8 @@ def extract_sections(html: str) -> dict[str, str]:
 
     soup = BeautifulSoup(html, "html.parser")
 
-    # 收集所有 block heading 及其後的兄弟節點
-    # bhuntr 以 <h2> 區隔各節，<hr> 作為視覺分隔
-    heading_tags = ("h1", "h2", "h3", "h4")
+    # 只以 h1/h2 作為區塊切割點；h3/h4 留在內容中不切割
+    heading_tags = ("h1", "h2")
 
     # 取得頂層節點列表（soup 的直接子節點或 body 的子節點）
     container = soup.body if soup.body else soup
