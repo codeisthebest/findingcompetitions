@@ -57,6 +57,8 @@ SPORTS_TITLE_KW = {
     "客語", "客家語",
     "原住民", "原民",
     "族語",
+    # 身心障礙限定（標題）
+    "適應運動", "身障者才藝", "身心障礙者技能",
     # 寫生
     "寫生比賽", "寫生大賽", "寫生競賽", "寫生嘉年華",
     # 書法
@@ -83,6 +85,11 @@ STUDENT_ONLY_KW = {
     "國中生", "高中生", "高職生", "大學生", "大專生",
     "幼兒園", "幼稚園", "托兒所", "學齡前",
     "在校學生", "在學學生",
+}
+
+# ── identifyLimitOther 中若含以下關鍵字，代表僅限身心障礙者，應排除 ────────────
+DISABILITY_ONLY_KW = {
+    "身心障礙", "身障", "視障", "聽障", "肢障",
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -115,6 +122,10 @@ def should_include(comp: dict) -> bool:
             open_to_public = True  # other 且非純學生 → 接受
 
     if not open_to_public:
+        return False
+
+    # ── 身心障礙限定排除（other_text 含身心障礙關鍵字，即使 nonStudent=True）─────
+    if any(kw in other_text for kw in DISABILITY_ONLY_KW):
         return False
 
     # ── 體育競技 / 音樂劇排除（標題 + 說明前 200 字）──────────────────────────
