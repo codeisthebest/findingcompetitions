@@ -95,6 +95,47 @@ def should_include(comp: dict) -> bool:
     return True
 
 
+def parse_deadline_from_text(html: str) -> int:
+    """
+    當 submitEndTime 為空時，嘗試從說明文字中解析繳交/報名截止日。
+    支援：
+      - 民國年：115年06月18日  (115 + 1911 = 2026)
+      - 西元年：2026年5月31日
+    策略：找所有「截止」關鍵字附近的日期，取最晚的一筆。
+    """
+    if not html:
+        return 0
+
+    from bs4 import BeautifulSoup
+    text = BeautifulSoup(html, "html.parser").get_text(" ")
+
+    # 截止關鍵字：往後 60 字內找日期
+    DEADLINE_KW = ["截止", "報名截止", "繳交截止", "繳件截止", "作品截止", "收件截止"]
+
+    # 日期 pattern：(年份)(月)(日)
+    DATE_RE = re.compile(r"(\d{3,4})年\s*(\d{1,2})月\s*(\d{1,2})日")
+
+    candidates: list[int] = []
+
+    for kw in DEADLINE_KW:
+        for m in re.finditer(re.escape(kw), text):
+            # 往前 80 字（處理「日期 截止」），往後 60 字（處理「截止 日期」）
+            window = text[max(0, m.start()-80): m.end()+60]
+            for dm in DATE_RE.finditer(window):
+                y, mo, d = int(dm.group(1)), int(dm.group(2)), int(dm.group(3))
+                if y < 1000:          # 民國年 → 西元
+                    y += 1911
+                if 2020 <= y <= 2040:
+                    try:
+                        dt = datetime(y, mo, d, 23, 59, 59,
+                                      tzinfo=TW_TZ)
+                        candidates.append(int(dt.timestamp()))
+                    except ValueError:
+                        pass
+
+    return max(candidates) if candidates else 0
+
+
 def normalize(comp: dict) -> dict:
     alias = comp.get("alias", "")
     cover = comp.get("coverImage") or {}
@@ -111,7 +152,8 @@ def normalize(comp: dict) -> dict:
         "alias": alias,
         "url": f"{BASE_URL}/tw/competitions/{alias}" if alias else "",
         "description": comp.get("guideline", comp.get("description", "")),
-        "deadline": comp.get("submitEndTime") or 0,       # Unix 秒
+        "deadline": (comp.get("submitEndTime") or 0) or
+                    parse_deadline_from_text(comp.get("guideline", comp.get("description", ""))),
         "start_date": comp.get("submitStartTime") or 0,   # Unix 秒
         "categories": comp.get("categories", []),
         "identify_limit": comp.get("identifyLimit") or {},
