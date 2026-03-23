@@ -52,12 +52,31 @@ def is_expired(comp: dict) -> bool:
 # Google 行事曆 URL（單筆）
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _schedule_text(comp: dict) -> str:
+    """取出活動時程的純文字，作為行事曆備註。"""
+    desc = comp.get("description", "") or ""
+    if desc:
+        sections = extract_sections(desc)
+        sched = sections.get("schedule", "")
+        if sched:
+            # 去除 Markdown 符號，保留可讀純文字
+            text = re.sub(r"\*\*([^*]+)\*\*", r"\1", sched)   # **粗體**
+            text = re.sub(r"\| --- \|.*", "", text)             # 表格分隔列
+            text = re.sub(r"\|", " ", text)                     # 表格直線
+            text = re.sub(r"[ \t]+", " ", text)
+            text = re.sub(r"\n{3,}", "\n\n", text)
+            return text.strip()
+    return ""
+
+
 def gcal_url(comp: dict) -> str:
     title = comp.get("title", "競賽")
     url   = comp.get("url", "")
     prize = comp.get("prize_top", 0)
 
-    details = f"獎金：{prize:,} 元\n報名連結：{url}" if prize else f"報名連結：{url}"
+    sched = _schedule_text(comp)
+    prize_line = f"獎金：{prize:,} 元\n" if prize else ""
+    details = f"{sched}\n\n{prize_line}報名連結：{url}".strip() if sched else f"{prize_line}報名連結：{url}".strip()
 
     start_dt = ts_to_dt(comp.get("start_date"))
     end_dt   = ts_to_dt(comp.get("deadline"))
@@ -105,7 +124,9 @@ def generate_ics(competitions: list[dict]) -> bytes:
 
         url   = comp.get("url", "")
         prize = comp.get("prize_top", 0)
-        detail = f"獎金：{prize:,} 元\n報名：{url}"
+        sched = _schedule_text(comp)
+        prize_line = f"獎金：{prize:,} 元\n" if prize else ""
+        detail = f"{sched}\n\n{prize_line}報名：{url}".strip() if sched else f"{prize_line}報名：{url}".strip()
         ev.add("description", detail)
         if url:
             ev["url"] = vText(url)
