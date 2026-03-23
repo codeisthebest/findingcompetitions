@@ -285,12 +285,21 @@ def html_to_readable(raw: str) -> str:
 
 # 關鍵字對應（順序代表優先匹配）
 SECTION_KW: dict[str, list[str]] = {
+    "theme":       [
+        "活動主題", "競賽主題", "徵件主題", "主題說明", "活動說明", "活動目的",
+        "活動緣起", "活動宗旨", "活動內容", "徵件內容", "競賽說明", "活動介紹",
+        "前言", "宗旨",
+    ],
     "eligibility": [
         "參賽資格", "報名資格", "參賽對象", "徵選對象", "資格條件", "適用對象",
         "參加資格", "報名條件", "資格及徵件", "徵件辦法", "報名須知",
-        "報名方式", "投稿方式", "徵件對象", "活動辦法", "參賽規則", "參賽規範",
-        "報名辦法", "投稿辦法", "徵件規範", "申請資格", "申請對象",
-        "稿件規範", "稿件格式", "投稿規定", "作品規定", "繳件規範",
+        "徵件對象", "活動辦法", "參賽規則", "參賽規範",
+        "徵件規範", "申請資格", "申請對象", "作品規定",
+    ],
+    "registration": [
+        "報名方式", "報名辦法", "投稿方式", "投稿辦法",
+        "稿件規範", "稿件格式", "投稿規定", "繳件規範",
+        "報名流程", "投稿流程", "繳件方式", "繳件說明",
     ],
     "schedule":    [
         "活動時程", "活動日程", "報名時程", "賽程時程", "時程表", "重要日期",
@@ -314,7 +323,9 @@ SECTION_KW: dict[str, list[str]] = {
 }
 
 SECTION_META: dict[str, tuple[str, str]] = {
+    "theme":       ("🎯", "活動主題"),
     "eligibility": ("👤", "參賽資格"),
+    "registration":("📝", "報名方式"),
     "schedule":    ("📅", "活動時程"),
     "prizes":      ("🏆", "活動獎勵"),
     "criteria":    ("📊", "評分標準"),
@@ -333,7 +344,7 @@ def _match_section(heading_text: str) -> str | None:
 
 def extract_sections(html: str) -> dict[str, str]:
     """
-    從 guideline HTML 中找出五大區塊，回傳 {section_key: markdown_content}。
+    從 guideline HTML 中找出七大區塊，回傳 {section_key: markdown_content}。
     找不到的區塊值為空字串。
     """
     result = {k: "" for k in SECTION_KW}
