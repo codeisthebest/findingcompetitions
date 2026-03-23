@@ -285,11 +285,11 @@ def html_to_readable(raw: str) -> str:
 
 # 關鍵字對應（順序代表優先匹配）
 SECTION_KW: dict[str, list[str]] = {
-    "eligibility": ["參賽資格", "報名資格", "參賽對象", "徵選對象", "資格條件", "適用對象", "參加資格", "報名條件"],
-    "schedule":    ["活動時程", "活動日程", "報名時程", "賽程時程", "時程表", "重要日期", "活動時間", "報名時間", "競賽時程", "日程"],
-    "prizes":      ["活動獎勵", "獎勵辦法", "獎項設置", "獎項說明", "獎金設置", "得獎獎勵", "獎品", "頒獎", "獎勵"],
-    "criteria":    ["評分標準", "評審標準", "評選標準", "評分方式", "評選構面", "評審構面", "評選基準", "評分項目"],
-    "judges":      ["評審規範", "評選流程", "評審流程", "評審委員", "評審說明", "評審資格", "評審團", "裁判規範"],
+    "eligibility": ["參賽資格", "報名資格", "參賽對象", "徵選對象", "資格條件", "適用對象", "參加資格", "報名條件", "資格及徵件", "徵件辦法", "報名須知"],
+    "schedule":    ["活動時程", "活動日程", "報名時程", "賽程時程", "時程表", "重要日期", "活動時間", "報名時間", "競賽時程", "日程", "流程時間", "徵選活動流程"],
+    "prizes":      ["活動獎勵", "獎勵辦法", "獎項設置", "獎項說明", "獎金設置", "得獎獎勵", "獎品", "頒獎", "獎勵", "獎勵機制"],
+    "criteria":    ["評分標準", "評審標準", "評選標準", "評分方式", "評選構面", "評審構面", "評選基準", "評分項目", "評分方式"],
+    "judges":      ["評審規範", "評選流程", "評審流程", "評審委員", "評審說明", "評審資格", "評審團", "裁判規範", "徵選方式"],
 }
 
 SECTION_META: dict[str, tuple[str, str]] = {
@@ -324,6 +324,22 @@ def extract_sections(html: str) -> dict[str, str]:
     # 只以 h1/h2 作為區塊切割點；h3/h4 留在內容中不切割
     heading_tags = ("h1", "h2")
 
+    def _is_pseudo_heading(node) -> bool:
+        """
+        判斷 <p> 是否為偽標題：
+        內容幾乎全在 <strong> 裡，且文字含有節標識（冒號結尾或對應關鍵字）。
+        例：<p><span><strong>資格及徵件辦法：</strong></span></p>
+        """
+        if getattr(node, "name", None) != "p":
+            return False
+        text = node.get_text(strip=True).replace("\xa0", " ")
+        if not text or len(text) > 30:          # 偽標題通常很短
+            return False
+        strong_text = "".join(s.get_text() for s in node.find_all("strong"))
+        # strong 文字佔整體 80% 以上，且結尾有冒號或符合區塊關鍵字
+        ratio = len(strong_text.strip()) / len(text) if text else 0
+        return ratio >= 0.8 and (text.endswith("：") or text.endswith(":") or _match_section(text))
+
     # 取得頂層節點列表（soup 的直接子節點或 body 的子節點）
     container = soup.body if soup.body else soup
     nodes = list(container.children)
@@ -335,10 +351,12 @@ def extract_sections(html: str) -> dict[str, str]:
 
     for node in nodes:
         tag = getattr(node, "name", None)
-        if tag in heading_tags:
+        is_heading = tag in heading_tags
+        is_pseudo  = _is_pseudo_heading(node)
+
+        if is_heading or is_pseudo:
             heading_text = node.get_text(strip=True).replace("\xa0", " ")
             matched = _match_section(heading_text)
-            # 存前一組
             groups.append((current_key, current_nodes))
             current_key = matched
             current_nodes = []
