@@ -5,11 +5,13 @@
 import streamlit as st
 import json
 import os
+import re
 import urllib.parse
 from datetime import datetime
 from io import BytesIO
 
 import pytz
+from bs4 import BeautifulSoup
 from icalendar import Calendar, Event, vText
 
 # ── 時區 ──────────────────────────────────────────────────────────────────────
@@ -123,6 +125,134 @@ def generate_ics(competitions: list[dict]) -> bytes:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# HTML → 可讀 Markdown 轉換
+# ─────────────────────────────────────────────────────────────────────────────
+
+def html_to_readable(raw: str) -> str:
+    """
+    將含 HTML 標籤的說明文字轉為乾淨的 Markdown。
+    - 標題 (h1-h4) → 粗體行
+    - 段落 / <br> → 換行
+    - <li> → - 列點
+    - inline 元素 (strong/span/em/a) → 合併成同一行，避免破碎換行
+    """
+    if not raw or not raw.strip():
+        return ""
+    if "<" not in raw:
+        return raw.strip()
+
+    soup = BeautifulSoup(raw, "html.parser")
+
+    # ── inline 元素：只提取文字，貢獻至目前行緩衝 ───────────────────────────
+    INLINE_TAGS = {"span", "strong", "b", "em", "i", "a", "u", "s", "mark"}
+
+    def inline_text(node) -> str:
+        """遞迴取出 inline 節點的純文字（含子節點）"""
+        if isinstance(node, str):
+            return node.replace("\xa0", " ")
+        if node.name in INLINE_TAGS or node.name is None:
+            return "".join(inline_text(c) for c in node.children)
+        # 遇到 block 標籤停止 inline 擷取
+        return node.get_text(separator=" ")
+
+    lines: list[str] = []
+    buf: list[str] = []  # 目前行的 inline 文字緩衝
+
+    def flush():
+        text = "".join(buf).replace("\xa0", " ").strip()
+        buf.clear()
+        if text:
+            lines.append(text)
+
+    def process(node, indent=0, in_list=False):
+        if isinstance(node, str):
+            buf.append(node.replace("\xa0", " "))
+            return
+
+        tag = node.name or ""
+
+        # ── 標題 ─────────────────────────────────────────────────────────────
+        if tag in ("h1", "h2"):
+            flush()
+            text = node.get_text(separator="", strip=True).replace("\xa0", " ").strip()
+            if text:
+                lines.append("")
+                lines.append(f"**{text}**")
+            return
+
+        if tag in ("h3", "h4", "h5"):
+            flush()
+            text = node.get_text(separator="", strip=True).replace("\xa0", " ").strip()
+            if text:
+                lines.append("")
+                lines.append(f"**▸ {text}**")
+            return
+
+        # ── 水平線 ───────────────────────────────────────────────────────────
+        if tag == "hr":
+            flush()
+            lines.append("")
+            lines.append("---")
+            return
+
+        # ── 換行 <br> ────────────────────────────────────────────────────────
+        if tag == "br":
+            flush()
+            lines.append("")
+            return
+
+        # ── 段落 <p> ─────────────────────────────────────────────────────────
+        if tag == "p":
+            flush()
+            lines.append("")
+            for child in node.children:
+                process(child, indent)
+            flush()
+            return
+
+        # ── 列表項目 <li> → "- ..." ──────────────────────────────────────────
+        if tag == "li":
+            flush()
+            text = node.get_text(separator=" ", strip=True).replace("\xa0", " ").strip()
+            if text:
+                lines.append(("  " * indent) + f"- {text}")
+            return
+
+        # ── 有序 / 無序列表 ──────────────────────────────────────────────────
+        if tag in ("ul", "ol"):
+            flush()
+            lines.append("")
+            for child in node.children:
+                if getattr(child, "name", None) == "li":
+                    process(child, indent + (1 if in_list else 0), in_list=True)
+            return
+
+        # ── Inline 標籤：直接提取文字加入緩衝 ───────────────────────────────
+        if tag in INLINE_TAGS:
+            buf.append(inline_text(node))
+            return
+
+        # ── 其他（div、section、article…）：遞迴子節點 ───────────────────────
+        for child in node.children:
+            process(child, indent, in_list)
+
+    process(soup)
+    flush()
+
+    # 清理連續空白行
+    result: list[str] = []
+    prev_blank = False
+    for line in lines:
+        is_blank = line.strip() == ""
+        if is_blank and prev_blank:
+            continue
+        result.append(line)
+        prev_blank = is_blank
+
+    return "\n".join(result).strip()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # 競賽卡片 UI
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -175,8 +305,9 @@ def render_card(comp: dict, badge: str = ""):
         # 詳情
         desc = comp.get("description", "")
         if desc:
+            readable = html_to_readable(desc)
             with st.expander("📄 查看詳情"):
-                st.write(desc[:1000] + ("…（詳見原頁面）" if len(desc) > 1000 else ""))
+                st.markdown(readable if readable else desc[:800])
 
         # 連結按鈕
         url = comp.get("url", "")
