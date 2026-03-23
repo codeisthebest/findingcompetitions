@@ -79,9 +79,12 @@ def should_include(comp: dict) -> bool:
     if not open_to_public:
         return False
 
-    # ── 體育競技排除 ──────────────────────────────────────────────────────────
+    # ── 體育競技排除（標題 + 說明前 200 字）────────────────────────────────────
+    # 只取說明前段避免誤殺（非運動競賽的說明文字可能偶爾提到運動）
+    desc_preview = (comp.get("guideline") or comp.get("description") or "")[:200]
+    combined = title + desc_preview
     for kw in SPORTS_TITLE_KW:
-        if kw in title:
+        if kw in combined:
             return False
 
     return True
