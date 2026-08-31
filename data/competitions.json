@@ -37206,7 +37206,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.391049+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "65c9fca4e497eced599c1a454da1139a",
@@ -37248,7 +37248,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.393316+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "956d63d83208f42fb8560a6887bc5784",
@@ -37290,7 +37290,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.411123+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "60a92acfef880764a6a8290a545bcd90",
@@ -37332,7 +37332,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.412263+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "ec1ac13546890792ea3b61adaf29d0a0",
@@ -37374,7 +37374,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.414564+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "dfff09da156e6df6965fa8eedcd66832",
@@ -37414,7 +37414,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.415478+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "afe31df695a46279f6458f1169db326f",
@@ -37456,7 +37456,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.416707+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "518bbaf0a85d47aa30aece578715a0fa",
@@ -37498,7 +37498,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.419176+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "dd7c7e93000d837b15fb9ed120c2fff5",
@@ -37540,7 +37540,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.420472+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "650ee400b61dfa0f1555b9312a4ff50c",
@@ -37580,7 +37580,7 @@
     "location": "International",
     "scraped_at": "2026-08-24T09:50:23.425699+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "38adc2f3da14870c6032277ac8807d89",
@@ -37620,7 +37620,7 @@
     "location": "International",
     "scraped_at": "2026-08-24T09:50:23.431306+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "632864c6339c81e7576103d886ee8461",
@@ -37659,7 +37659,7 @@
     "location": "International",
     "scraped_at": "2026-08-24T09:50:23.436299+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "0e414f3830d7025b034849e6993c530c",
@@ -37698,7 +37698,7 @@
     "location": "International",
     "scraped_at": "2026-08-24T09:50:23.443533+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "73c7c805ea433adc7149b65c76056b2e",
@@ -37738,7 +37738,7 @@
     "location": "International",
     "scraped_at": "2026-08-24T09:50:23.447170+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "d370a676932e5b6137fc8a0e917af033",
@@ -37779,7 +37779,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.449589+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "5633f86678bafc4896545c5f7ef058e8",
@@ -37820,7 +37820,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.453246+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "f4ed1bf753a181cee23f553e8a965a8b",
@@ -37860,7 +37860,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.454817+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "9ec7212439abd74fc9ef2402f531ec42",
@@ -37902,7 +37902,7 @@
     "location": "International",
     "scraped_at": "2026-08-24T09:50:23.455967+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "8547eddf1bdc10e840d85ac954907ec5",
@@ -37944,7 +37944,7 @@
     "location": "International",
     "scraped_at": "2026-08-24T09:50:23.456493+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "2b33066713d4fdd9e87d40017294058f",
@@ -37986,7 +37986,7 @@
     "location": "International",
     "scraped_at": "2026-08-24T09:50:23.457986+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "eaaad812ab475dc91062910ac285a573",
@@ -38028,7 +38028,7 @@
     "location": "International",
     "scraped_at": "2026-08-24T09:50:23.458994+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "375f3d78c6dd3ee783f787ea066a9a0c",
@@ -38070,7 +38070,7 @@
     "location": "International",
     "scraped_at": "2026-08-24T09:50:23.459781+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "2575c74c33f8335f686bc2ea7d1af6b5",
@@ -38102,7 +38102,7 @@
     "location": "International",
     "scraped_at": "2026-08-24T09:50:23.460983+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "72f78cb1cea77a9e6f34704c175e1a08",
@@ -38134,7 +38134,7 @@
     "location": "International",
     "scraped_at": "2026-08-24T09:50:23.462339+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "762dd77fd543847d3384e53d531be65b",
@@ -38176,7 +38176,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.464393+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "220389ee120ef44f552bdefde647a69e",
@@ -38215,7 +38215,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.466235+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "243630f2defb9233fee2d38c5f46e888",
@@ -38254,7 +38254,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.496459+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "821488dae7ea9c23238eb0420eb6b0b5",
@@ -38294,7 +38294,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.506076+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "6df5f309c11561be681ed0c83554895b",
@@ -38333,7 +38333,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.514384+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "c61df2e01e56b88ab838be9a88b6d4b9",
@@ -38372,7 +38372,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.534456+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "b1b6f60fc5450f2968e29277b0cd5a58",
@@ -38411,7 +38411,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.558933+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "f96682035c6a8c53c7e1bfebd5eb3af4",
@@ -38450,7 +38450,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.574654+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "17723b71a4628d05d8be16fa66129b4e",
@@ -38489,7 +38489,7 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.849316+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   },
   {
     "id": "7e40cf32e020a379ba476480886216cc",
@@ -38538,6 +38538,6 @@
     "location": "Taiwan",
     "scraped_at": "2026-08-24T09:50:23.876255+08:00",
     "first_seen": "2026-08-24T09:50:23.946278+08:00",
-    "is_new": true
+    "is_new": false
   }
 ]
